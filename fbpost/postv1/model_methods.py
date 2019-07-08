@@ -1,12 +1,40 @@
 from .models import User, Reaction, Post, Comment
+from django.db.models import Q, Count
+from enum import Enum
+
+
+class ReactionType(Enum):
+    LOL = "LOL"
+    HAHA = "HAHA"
+    WOW = "WOW"
+    LIKE = "LIKE"
+    SAD = "SAD"
+    ANGRY = " ANGRY"
+    LOVE = "LOVE"
 
 
 def create_post(user_id, post_content):
     user = User.objects.get(id=user_id)
+    post = user.posts.create(content=post_content)
+    return post.id
 
-    post_id = user.posts.create(content=post_content)
 
-    return post_id
+def get_user_data(user):
+    user_data = {}
+    user_data.update({"name": user.name})
+    user_data.update({"user_id": user.id})
+    user_data.update({"profile_pic_url": user.profile_pic_url})
+
+    return user_data
+
+
+def get_reactions_data(obj):
+    reaction_data = {}
+    reaction_data.update({"count": obj.reactions.count()})
+    types = obj.reactions.values_list('reaction', flat=True).distinct()
+    reaction_data.update({"type": list(types)})
+
+    return reaction_data
 
 
 def get_post(post_id):
@@ -18,81 +46,57 @@ def get_post(post_id):
         raise Exception("User not found")
 
     result.update({"posted_id": post_id})
-
-    result.update({"posted_at": str(post.posted_at)[:len(str(post.posted_at)) - 6]})
-
+    result.update({"posted_at": post.posted_at.strftime("%Y-%m-%d %H:%M:%S.%f")})
     result.update({"post_content": post.content})
 
-    reactionslist = []
-
     # fetching user data
-    userdata = {}
-
-    userdata.update({"name": post.posted_by.name})
-    userdata.update({"user_id": post.posted_by.id})
-    userdata.update({"profile_pic_url": post.posted_by.profile_pic_url})
-
-    result.update({"posted_by": userdata})
+    user = User.objects.get(id=post.posted_by.id)
+    user_data = get_user_data(user)
+    result.update({"posted_by": user_data})
 
     # fetching reactions data
-
-    for x in post.reactions.all():
-        reactionslist.append(x.reaction)
-
-    reactiondata = {}
-    reactiondata.update({"count": len(reactionslist)})
-    reactiondata.update({"type": list(set(reactionslist))})
-
-    result.update({"reactions": reactiondata})
+    reaction_data = get_reactions_data(post)
+    result.update({"reactions": reaction_data})
 
     # getting comments
     comments = post.comments.all()
     comments_result = get_comments(comments)
 
     result.update({"comments": comments_result})
-
     result.update({"comments_count": post.comments.count()})
-
-
 
     return result
 
 
-# custom method to get comments for a post
 def get_comments(comments):
     res_list = list()
 
-    for x in comments:
+    for comment in comments:
         res_dict = dict()
+        res_dict.update({"comment_id": comment.id})
 
-        res_dict.update({"comment_id": x.id})
-
-        user_data = dict()
-        user_data.update({"user_id": x.commented_by.id})
-        user_data.update({"name": x.commented_by.name})
-        user_data.update({"profile_pic_url": x.commented_by.profile_pic_url})
+        # user data
+        user = User.objects.get(id=comment.commented_by.id)
+        user_data = get_user_data(user)
 
         res_dict.update({"commenter": user_data})
-        res_dict.update({"commented_at": str(x.commented_at)[:len(str(x.commented_at)) - 6]})
-        res_dict.update({"comment_content:": x.content})
+        res_dict.update({"commented_at": comment.commented_at.strftime("%Y-%m-%d %H:%M:%S.%f")})
+        res_dict.update({"comment_content:": comment.content})
 
-        reactionslist = []
         # fetching reactions data
+        reaction_data = get_reactions_data(comment)
+        res_dict.update({"reactions": reaction_data})
 
-        for c in x.reactions.all():
-            reactionslist.append(c.reaction)
+        # handling comments and replies for same function
+        temp = get_comments(comment.replies.all())
 
-        reactiondata = {}
-        reactiondata.update({"count": x.reactions.count()})
-        reactiondata.update({"type": list(set(reactionslist))})
-
-        res_dict.update({"reactions": reactiondata})
+        if temp != None:
+            res_dict.update({"replies count": comment.replies.count()})
+            res_dict.update({"replies": temp})
 
         res_list.append(res_dict)
 
-    # print(res_list)
-
-    return res_list
+        return res_list
 
 
 def get_user_posts(user_id):
@@ -120,20 +124,25 @@ def delete_post(post_id):
 
 def react_to_post(user_id, post_id, reaction_type):
     try:
-        u = User.objects.get(id=user_id)
+        user = User.objects.get(id=user_id)
     except User.DoesNotExist:
         raise Exception("User does not exist")
 
     try:
-        p = Post.objects.get(id=post_id)
+        post = Post.objects.get(id=post_id)
     except Post.DoesNotExist:
         raise Exception("Post does not exist")
 
-    if reaction_type not in ["HAHA", "WOW", "LIKE", "LOVE", "SAD"]:
+    reactions_list = [ReactionType.LOL.value, ReactionType.HAHA.value
+        , ReactionType.WOW.value, ReactionType.LIKE.value
+        , ReactionType.LOVE.value,
+                      ReactionType.SAD.value, ReactionType.ANGRY.value]
+
+    if reaction_type not in reactions_list:
         raise Exception("Reaction does not exist")
 
     try:
-        react = Reaction.objects.get(user_id=u.id, post_id=p.id)
+        react = Reaction.objects.get(user_id=user.id, post_id=post.id)
         if react.reaction == reaction_type:
             react.delete()
         else:
@@ -142,102 +151,83 @@ def react_to_post(user_id, post_id, reaction_type):
 
     except:
 
-        Reaction.objects.create(user=u, reaction=reaction_type, post=p)
+        Reaction.objects.create(user=user, reaction=reaction_type, post=post)
 
 
 def get_posts_reacted_by_user(user_id):
     try:
-        u = User.objects.get(id=user_id)
+        user = User.objects.get(id=user_id)
     except User.DoesNotExist:
         raise Exception("User does not exist")
 
-    reactions = u.reactions.all()
+    reactions = user.reactions.all()
 
-    postsdata = list()
+    posts_data = list()
 
-    for x in reactions:
-        postsdata.append(get_post(x.post.id))
+    for reaction in reactions:
+        posts_data.append(get_post(reaction.post.id))
 
-    return postsdata
+    return posts_data
 
 
 def get_reactions_to_post(post_id):
     try:
-        p = Post.objects.get(id=post_id)
+        post = Post.objects.get(id=post_id)
     except Post.DoesNotExist:
         raise Exception("Post does not exist")
 
-    reactions = p.reactions.all()
+    reactions = post.reactions.all()
 
     result = []
 
-    for x in reactions:
-        temp = {}
+    for obj in reactions:
+        data = {}
 
-        temp.update({"user_id": x.user.id})
-        temp.update({"name": x.user.name})
-        temp.update({"profile_pic": x.user.profile_pic_url})
+        data.update({"user_id": obj.user.id})
+        data.update({"name": obj.user.name})
+        data.update({"profile_pic": obj.user.profile_pic_url})
 
-        temp.update({"reaction": x.reaction})
+        data.update({"reaction": obj.reaction})
 
-        result.append(temp)
+        result.append(data)
 
     return result
 
 
 def get_reaction_metrics(post_id):
     try:
-        p = Post.objects.get(id=post_id)
+        Post.objects.get(id=post_id)
     except Post.DoesNotExist:
         raise Exception("Post does not exist")
 
-    reactions = p.reactions.all()
+    count_object = Count('reaction')
 
-    reaction_metrics = list()
+    temp = Reaction.objects.filter(post_id=19).values('reaction').annotate(count=count_object)
 
-    metrics = {}
-
-    for x in reactions:
-
-        if x.reaction in metrics.keys():
-            metrics[x.reaction] += 1
-        else:
-            metrics[x.reaction] = 1
-
-    for key, values in metrics.items():
-        temp = {}
-        temp.update({"reaction_type": key})
-        temp.update({"count": values})
-
-        reaction_metrics.append(temp)
-
-    print(reaction_metrics)
+    return list(temp)
 
 
 def get_posts_with_more_positive_reactions():
-    pos = ["LIKE", "WOW", "LOVE", "HAHA"]
-    negs = ["SAD", "ANGRY"]
+    pos_reactions = [ReactionType.LOL.value, ReactionType.HAHA.value
+        , ReactionType.WOW.value, ReactionType.LIKE.value
+        , ReactionType.LOVE.value]
+
+    neg_reactions = [ReactionType.SAD.value, ReactionType.ANGRY.value]
+
+
 
     res_post_ids = list()
 
-    for p in Post.objects.all():
+    pos_r = Count('reaction', filter=Q(reaction__in=pos_reactions))
+    neg_r = Count('reaction', filter=Q(reaction__in=neg_reactions))
 
-        # print(p)
-        reactions = p.reactions.all()
+    check_count = Reaction.objects.exclude(post=None).values('post_id').annotate(pos_reac=pos_r).annotate(
+        neg_reac=neg_r)
 
-        check_count = list((0, 0))
-        # print(reactions)
+    for x in check_count:
 
-        for r in reactions:
-
-            if r.reaction in pos:
-                check_count[0] += 1
-            if r.reaction in negs:
-                check_count[1] += 1
-
-        if check_count[0] > check_count[1]:
-            res_post_ids.append(p.id)
-        # print("_______________")
+        if x['pos_reac'] > x['neg_reac']:
+            res_post_ids.append(x['post_id'])
 
     return res_post_ids
 
@@ -246,36 +236,41 @@ def get_posts_with_more_positive_reactions():
 
 def add_comment(post_id, comment_user_id, comment_text):
     try:
-        p = Post.objects.get(id=post_id)
+        post = Post.objects.get(id=post_id)
     except Post.DoesNotExist:
         raise Exception("Post doesnot Exists")
 
     try:
-        u = User.objects.get(id=comment_user_id)
+        user = User.objects.get(id=comment_user_id)
     except User.DoesNotExist:
         raise Exception("User doesnot Exists")
 
-    c = Comment.objects.create(content=comment_text, commented_by=u, post=p)
+    created_comment = Comment.objects.create(content=comment_text, commented_by=user, post=post)
 
-    return c.id
+    return created_comment.id
 
 
 def react_to_comment(user_id, comment_id, reaction_type):
     try:
-        u = User.objects.get(id=user_id)
+        user = User.objects.get(id=user_id)
     except User.DoesNotExist:
         raise Exception("User does not exist")
 
     try:
-        c = Comment.objects.get(id=comment_id)
+        comment = Comment.objects.get(id=comment_id)
     except Comment.DoesNotExist:
         raise Exception("Comment does not exist")
 
-    if reaction_type not in ["HAHA", "WOW", "LIKE", "LOVE", "SAD"]:
+    reactions_list = [ReactionType.LOL.value, ReactionType.HAHA.value
+        , ReactionType.WOW.value, ReactionType.LIKE.value
+        , ReactionType.LOVE.value,
+                      ReactionType.SAD.value, ReactionType.ANGRY.value]
+
+    if reaction_type not in reactions_list:
         raise Exception("Reaction does not exist")
 
     try:
-        react = Reaction.objects.get(user_id=u.id, comment_id=c.id)
+        react = Reaction.objects.get(user_id=user.id, comment_id=comment.id)
         if react.reaction == reaction_type:
             react.delete()
         else:
@@ -284,7 +279,7 @@ def react_to_comment(user_id, comment_id, reaction_type):
 
     except:
 
-        Reaction.objects.create(user=u, reaction=reaction_type, comment=c)
+        Reaction.objects.create(user=user, reaction=reaction_type, comment=comment)
 
 
 # replies methods
@@ -296,11 +291,11 @@ def reply_to_comment(comment_id, reply_user_id, reply_text):
         raise Exception("Comment doesnot Exists")
 
     try:
-        u = User.objects.get(id=reply_user_id)
+        user = User.objects.get(id=reply_user_id)
     except User.DoesNotExist:
         raise Exception("User doesnot Exists")
 
-    reply_comment = Comment.objects.create(content=reply_text, commented_by=u, parent_comment=comment)
+    reply_comment = Comment.objects.create(content=reply_text, commented_by=user, parent_comment=comment)
 
     return reply_comment.id
 
@@ -318,7 +313,7 @@ def get_replies_for_comment(comment_id):
 
     result = get_comments(replies)
 
-    # print(result)
+    return result
 
 
 if __name__ == '__main__':
