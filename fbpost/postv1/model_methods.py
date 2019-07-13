@@ -11,13 +11,17 @@ class ReactionType(Enum):
     WOW = "WOW"
     LIKE = "LIKE"
     SAD = "SAD"
-    ANGRY = " ANGRY"
+    ANGRY = "ANGRY"
     LOVE = "LOVE"
 
 
 def create_post(user_id, post_content):
     # done
-    user = User.objects.get(id=user_id)
+    try:
+        user = User.objects.get(id=user_id)
+    except User.DoesNotExist:
+        raise Exception("User Does not Exist")
+
     post = user.posts.create(content=post_content)
     return post.id
 
@@ -106,7 +110,7 @@ def get_post(post_id):
 
     except Post.DoesNotExist:
 
-        raise Exception("User not found")
+        raise Exception("Post Does not Exist")
 
     result.update({"posted_id": post_id})
     result.update({"posted_at": post.posted_at.strftime("%Y-%m-%d %H:%M:%S.%f")})
@@ -229,7 +233,7 @@ def react_to_post(user_id, post_id, reaction_type):
             react.reaction = reaction_type
             react.save()
 
-    except:
+    except Exception:
 
         Reaction.objects.create(user=user, reaction=reaction_type, post=post)
 
