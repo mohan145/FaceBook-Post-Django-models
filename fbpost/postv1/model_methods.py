@@ -16,7 +16,7 @@ class ReactionType(Enum):
 
 
 def create_post(user_id, post_content):
-    # done
+    # done opt
     try:
         user = User.objects.get(id=user_id)
     except User.DoesNotExist:

@@ -1,7 +1,7 @@
 import pytest
 from postv1.models import User, Post, Reaction, Comment
 from postv1.model_methods import get_posts_with_more_positive_reactions, create_post, get_post, react_to_post, \
-    ReactionType, get_reaction_metrics
+    ReactionType, get_reaction_metrics, delete_post
 
 
 def create_user(name, url):
@@ -187,9 +187,9 @@ def test_post_reaction_metrics_metrics_data(post_setup, user_setup):
     assert {'reaction': ReactionType.SAD.value, 'count': 1} in res
 
 
+# get post with more postive reactions test
 @pytest.mark.django_db
 def test_post_with_more_pos_reactions(post_setup, user_setup):
-    print(Post.objects.all())
     post1 = Post.objects.get(id=1)
     post2 = Post.objects.get(id=2)
     post3 = Post.objects.get(id=3)
@@ -216,3 +216,13 @@ def test_post_with_more_pos_reactions(post_setup, user_setup):
     assert Post.objects.get(id=result[0]) == post1
 
 
+# delete post test
+@pytest.mark.django_db
+def test_delete_post(post_setup):
+    post_to_delete = Post.objects.get(id=3)
+
+    delete_post(post_to_delete.id)
+
+    with pytest.raises(Exception) as e:
+        get_post(3)
+    assert "Post Does not Exist" in str(e.value)

@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a1014689-d74e-4c67-9201-1294020aa10d" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/postv1/model_methods.py" beforeDir="false" afterPath="$PROJECT_DIR$/postv1/model_methods.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test_dir/test_post_methods.py" beforeDir="false" afterPath="$PROJECT_DIR$/test_dir/test_post_methods.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -39,22 +40,10 @@
             <entry file="file://$PROJECT_DIR$/test_dir/test_post_methods.py">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="565">
-                  <caret line="217" lean-forward="true" selection-start-line="217" selection-end-line="217" />
+                  <caret line="228" lean-forward="true" selection-start-line="228" selection-end-line="228" />
                   <folding>
                     <element signature="e#0#13#0" expanded="true" />
                   </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$USER_HOME$/Desktop/learning/practice_problems/Django/fb_post_v3/django_db_practice.md">
-              <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-                <state split_layout="SPLIT">
-                  <first_editor relative-caret-position="720">
-                    <caret line="48" column="31" selection-start-line="48" selection-start-column="17" selection-end-line="48" selection-end-column="32" />
-                  </first_editor>
-                  <second_editor />
                 </state>
               </provider>
             </entry>
@@ -102,8 +91,8 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/postv1/model_methods.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="355">
-                  <caret line="311" lean-forward="true" selection-start-line="311" selection-end-line="311" />
+                <state relative-caret-position="2395">
+                  <caret line="210" column="43" lean-forward="true" selection-start-line="210" selection-start-column="43" selection-end-line="210" selection-end-column="43" />
                   <folding>
                     <element signature="e#0#49#0" expanded="true" />
                   </folding>
@@ -137,8 +126,8 @@
         <option value="$PROJECT_DIR$/pytest.ini" />
         <option value="$PROJECT_DIR$/test_dir/test_practice.py" />
         <option value="$PROJECT_DIR$/test_dir/test_smtpsimple.py" />
-        <option value="$PROJECT_DIR$/postv1/model_methods.py" />
         <option value="$PROJECT_DIR$/test_dir/test_comment_methods.py" />
+        <option value="$PROJECT_DIR$/postv1/model_methods.py" />
         <option value="$PROJECT_DIR$/test_dir/test_post_methods.py" />
       </list>
     </option>
@@ -409,7 +398,7 @@
     <entry file="file://$PROJECT_DIR$/test_dir/test_post_methods.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="565">
-          <caret line="217" lean-forward="true" selection-start-line="217" selection-end-line="217" />
+          <caret line="228" lean-forward="true" selection-start-line="228" selection-end-line="228" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
           </folding>
