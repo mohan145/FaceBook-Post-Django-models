@@ -28,8 +28,8 @@ def test_react_to_post_reaction_dne_exception(user_setup):
     user = User.objects.get(name='user1')
 
     with pytest.raises(Exception) as e:
-        react_to_comment(user.id, comment_id=1, reaction_type='LOL')
-        print(e.value)
+        react_to_comment(user.id, comment_id=1, reaction_type=ReactionType.HAHA.value)
+
     assert 'Comment does not exist' in str(e.value)
 
 
@@ -68,10 +68,6 @@ def test_react_to_post_user_cooresponding_post_same_reaction(post_setup):
     post = Post.objects.get(content='post1')
     comment = post.comments.get(id=1)
     user = comment.commented_by
-
-    # reactions = comment.reactions.all()[0].reaction
-    # print(reactions) #WOW
-
     react_to_comment(user.id, comment.id, ReactionType.WOW.value)
     reactions = comment.reactions.all()
 
@@ -84,7 +80,6 @@ def test_react_to_post_user_corresponding_post_change_reaction(post_setup):
     comment = post.comments.get(id=1)
 
     user = comment.commented_by
-    # print(comment.reactions.all()[0].reaction) #WOW
 
     react_to_comment(user.id, comment.id, ReactionType.HAHA.value)
     r = comment.reactions.get(id=2)

@@ -58,9 +58,6 @@ def get_comment(comment):
     res_dict = dict()
     res_dict.update({"comment_id": comment.id})
 
-    # user data
-    # user = User.objects.get(id=comment.commented_by.id)
-
     user_data = get_user_data(comment.commented_by)
 
     res_dict.update({"commenter": user_data})

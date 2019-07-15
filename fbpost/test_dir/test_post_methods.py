@@ -39,11 +39,12 @@ def test_get_post_post_data(post_setup):
     p = Post.objects.get(content="post1")
     returned_post = get_post(p.id)
 
-    # TODO: Refactor below code
     assert returned_post['post_content'] == p.content
     assert returned_post['posted_by']['name'] == p.posted_by.name
     assert returned_post['posted_by']['profile_pic_url'] == p.posted_by.profile_pic_url
     assert returned_post['reactions']['count'] == 3
+
+    assert len(returned_post['reactions']['type']) == 3
     assert ReactionType.LIKE.value in returned_post['reactions']['type']
     assert ReactionType.WOW.value in returned_post['reactions']['type']
     assert ReactionType.SAD.value in returned_post['reactions']['type']

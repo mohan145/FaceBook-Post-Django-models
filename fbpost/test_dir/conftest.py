@@ -6,7 +6,7 @@ from postv1.models import Post
 
 @pytest.fixture
 def user_setup():
-    # User.objects.create(name='user1', profile_pic_url="user1@xyz.com")
+
     create_user(name='user1', url='user1@xyz.com')
     create_user(name='user2', url='user1@xyz.com')
     create_user(name='user3', url='user1@xyz.com')
