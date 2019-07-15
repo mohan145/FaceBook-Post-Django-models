@@ -160,7 +160,25 @@ def test_react_to_post_user_corresponding_post_change_reaction():
 
 # test reaction metrics
 @pytest.mark.django_db
-def test_reaction_metrics_count_type(post_setup):
+def test_reaction_metrics_post_exists(post_setup):
     with pytest.raises(Exception) as e:
         get_reaction_metrics(post_id=2)
     assert "Post does not exist" in str(e.value)
+
+
+@pytest.mark.django_db
+def test_post_reaction_metrics_metrics_data(post_setup, user_setup):
+    post = Post.objects.get(id=1)
+    user = post.posted_by
+    user2 = User.objects.get(id=2)
+    post.reactions.create(user=user, reaction=ReactionType.LIKE.value)
+    post.reactions.create(user=user2, reaction=ReactionType.HAHA.value)
+    post.reactions.create(user=user2, reaction=ReactionType.SAD.value)
+
+    res = get_reaction_metrics(1)
+
+    assert {'reaction': ReactionType.HAHA.value, 'count': 1} in res
+    assert {'reaction': ReactionType.LIKE.value, 'count': 2} in res
+    assert {'reaction': ReactionType.SAD.value, 'count': 1} in res
+
+
