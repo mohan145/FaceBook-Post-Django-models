@@ -276,7 +276,7 @@ def get_reactions_to_post(post_id):
     try:
         post = Post.objects.prefetch_related('reactions', 'reactions__user').get(id=post_id)
     except Post.DoesNotExist:
-        raise Exception("Post does not exist")
+        raise Exception("Post Does not Exist")
 
     result = []
 
@@ -295,7 +295,7 @@ def get_reaction_metrics(post_id):
 
         Post.objects.get(id=post_id)
     except Post.DoesNotExist:
-        raise Exception("Post does not exist")
+        raise Exception("Post Does not Exist")
 
     count_object = Count('reaction')
 

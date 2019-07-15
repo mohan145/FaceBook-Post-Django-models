@@ -1,7 +1,7 @@
 import pytest
 from postv1.models import User, Post, Reaction, Comment
 from postv1.model_methods import get_posts_with_more_positive_reactions, create_post, get_post, react_to_post, \
-    ReactionType, get_reaction_metrics, delete_post
+    ReactionType, get_reaction_metrics, delete_post, get_reactions_to_post
 
 
 def create_user(name, url):
@@ -37,8 +37,30 @@ def user_setup():
 @pytest.fixture
 def post_setup():
     create_post_data(content='post1', uname='user1', url='user1@xyz.com')
+
     create_post_data(content='post2', uname='user2', url='user2@xyz.com')
     create_post_data(content='post3', uname='user3', url='user3@xyz.com')
+
+    post1 = Post.objects.get(id=1)
+    post2 = Post.objects.get(id=2)
+    post3 = Post.objects.get(id=3)
+
+    user1 = post1.posted_by
+    user2 = post2.posted_by
+    user3 = post3.posted_by
+
+    # more positive reactions
+    post1.reactions.create(user=user3, reaction=ReactionType.WOW.value)
+    post1.reactions.create(user=user2, reaction=ReactionType.SAD.value)
+
+    # equal pos and neg reactions
+    post2.reactions.create(user=user1, reaction=ReactionType.WOW.value)
+    post2.reactions.create(user=user2, reaction=ReactionType.SAD.value)
+    post2.reactions.create(user=user3, reaction=ReactionType.ANGRY.value)
+
+    # more neg reactions
+    post3.reactions.create(user=user2, reaction=ReactionType.ANGRY.value)
+    post3.reactions.create(user=user3, reaction=ReactionType.SAD.value)
 
 
 # create post test
@@ -79,8 +101,8 @@ def test_get_post_post_data(post_setup):
     assert returned_post['post_content'] == "post1"
     assert returned_post['posted_by']['name'] == "user1"
     assert returned_post['posted_by']['profile_pic_url'] == "user1@xyz.com"
-    assert returned_post['reactions']['count'] == 1
-    assert returned_post['reactions']['type'][0] == 'LIKE'
+    assert returned_post['reactions']['count'] == 3
+    assert 'LIKE' in returned_post['reactions']['type']
     assert returned_post['comments_count'] == 1
     assert returned_post['comments'][0]['comment_content:'] == "comment1"
     assert returned_post['comments'][0]['reactions']['count'] == 1
@@ -168,22 +190,15 @@ def test_react_to_post_user_corresponding_post_change_reaction():
 def test_reaction_metrics_post_exists(post_setup):
     with pytest.raises(Exception) as e:
         get_reaction_metrics(post_id=9)
-    assert "Post does not exist" in str(e.value)
+    assert "Post Does not Exist" in str(e.value)
 
 
 @pytest.mark.django_db
 def test_post_reaction_metrics_metrics_data(post_setup, user_setup):
-    post = Post.objects.get(id=1)
-    user = post.posted_by
-    user2 = User.objects.get(id=2)
-    post.reactions.create(user=user, reaction=ReactionType.LIKE.value)
-    post.reactions.create(user=user2, reaction=ReactionType.HAHA.value)
-    post.reactions.create(user=user2, reaction=ReactionType.SAD.value)
-
     res = get_reaction_metrics(1)
 
-    assert {'reaction': ReactionType.HAHA.value, 'count': 1} in res
-    assert {'reaction': ReactionType.LIKE.value, 'count': 2} in res
+    assert {'reaction': ReactionType.WOW.value, 'count': 1} in res
+    assert {'reaction': ReactionType.LIKE.value, 'count': 1} in res
     assert {'reaction': ReactionType.SAD.value, 'count': 1} in res
 
 
@@ -191,26 +206,6 @@ def test_post_reaction_metrics_metrics_data(post_setup, user_setup):
 @pytest.mark.django_db
 def test_post_with_more_pos_reactions(post_setup, user_setup):
     post1 = Post.objects.get(id=1)
-    post2 = Post.objects.get(id=2)
-    post3 = Post.objects.get(id=3)
-
-    user1 = post1.posted_by
-    user2 = post2.posted_by
-    user3 = post3.posted_by
-
-    # more positive reactions
-    post1.reactions.create(user=user3, reaction=ReactionType.WOW.value)
-    post1.reactions.create(user=user2, reaction=ReactionType.SAD.value)
-
-    # equal pos and neg reactions
-    post2.reactions.create(user=user1, reaction=ReactionType.WOW.value)
-    post2.reactions.create(user=user2, reaction=ReactionType.SAD.value)
-    post2.reactions.create(user=user3, reaction=ReactionType.ANGRY.value)
-
-    # more neg reactions
-    post3.reactions.create(user=user2, reaction=ReactionType.ANGRY.value)
-    post3.reactions.create(user=user3, reaction=ReactionType.SAD.value)
-
     result = get_posts_with_more_positive_reactions()
 
     assert Post.objects.get(id=result[0]) == post1
@@ -226,3 +221,24 @@ def test_delete_post(post_setup):
     with pytest.raises(Exception) as e:
         get_post(3)
     assert "Post Does not Exist" in str(e.value)
+
+
+# get reactions to post tests
+@pytest.mark.django_db
+def test_get_reactions_to_post_post_exception():
+    with pytest.raises(Exception) as e:
+        get_reactions_to_post(1)
+    assert "Post Does not Exist" in str(e.value)
+
+
+@pytest.mark.django_db
+def test_get_reactions_to_post_reactions_data(post_setup):
+    post = Post.objects.get(id=1)
+
+    res = get_reactions_to_post(1)
+
+    assert {'name': 'user1', 'user_id': 1, 'profile_pic_url': 'user1@xyz.com', 'reaction': 'LIKE'} in res
+    assert {'name': 'user3', 'user_id': 3, 'profile_pic_url': 'user3@xyz.com', 'reaction': 'WOW'} in res
+    assert {'name': 'user2', 'user_id': 2, 'profile_pic_url': 'user2@xyz.com', 'reaction': 'SAD'} in res
+
+
