@@ -38,8 +38,8 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/test_dir/test_post_methods.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="490">
-                  <caret line="179" column="67" selection-start-line="179" selection-start-column="67" selection-end-line="179" selection-end-column="67" />
+                <state relative-caret-position="565">
+                  <caret line="217" lean-forward="true" selection-start-line="217" selection-end-line="217" />
                   <folding>
                     <element signature="e#0#13#0" expanded="true" />
                   </folding>
@@ -408,8 +408,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/test_dir/test_post_methods.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="490">
-          <caret line="179" column="67" selection-start-line="179" selection-start-column="67" selection-end-line="179" selection-end-column="67" />
+        <state relative-caret-position="565">
+          <caret line="217" lean-forward="true" selection-start-line="217" selection-end-line="217" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
           </folding>
