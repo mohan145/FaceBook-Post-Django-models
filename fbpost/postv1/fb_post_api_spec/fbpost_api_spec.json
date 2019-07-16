@@ -1,8 +1,7 @@
-
 {
   "swagger": "2.0",
   "host": "127.0.0.1:8000",
-  "basePath": "/api/",
+  "basePath": "/api/fbpost/",
   "info": {
     "version": "1.0.0",
     "title": "FaceBook Post API",
@@ -219,6 +218,15 @@
           "post_content"
         ]
       }
+    },
+
+    "PostIdParameter": {
+      "name": "PostIdParameter",
+      "in": "path",
+      "description":"Given Post ID",
+      "type":"integer",
+      "format":"int64",
+      "required": true
     }
   },
   "responses": {
@@ -236,10 +244,18 @@
           "post_id"
         ]
       }
+    },
+
+    "GetPostResponse": {
+      "description": "Return data of an entire post given a post id",
+      "schema": {
+        "$ref": "#/definitions/Post"
+      }
+
     }
   },
   "paths": {
-    "/fbpost/post/v1/": {
+    "/post/v1/": {
       "post": {
         "operationId": "create_post",
         "summary": "create a new post",
@@ -262,11 +278,34 @@
           }
         }
       }
+    },
+
+    "/post/post_id/v1/": {
+      "get": {
+        "operationId": "get_post",
+        "summary": "get post data",
+        "description": "Return the data of post given a post id ",
+        "security": [
+          {
+            "oauth": [
+              "superuser"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/PostIdParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/GetPostResponse"
+          }
+        }
+      }
     }
+
+
+
   }
 }
-
-
-
-
-
