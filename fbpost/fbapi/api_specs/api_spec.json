@@ -1,0 +1,285 @@
+{
+  "swagger": "2.0",
+  "host": "127.0.0.1:8000",
+  "basePath": "/api/",
+  "info": {
+    "version": "1.0.0",
+    "title": "Simple API",
+    "description": "A simple API to learn how to write OpenAPI Specification"
+  },
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "securityDefinitions": {
+    "oauth": {
+      "tokenUrl": "http://auth.ibtspl.com/oauth2/",
+      "flow": "password",
+      "scopes": {
+        "read": "read users",
+        "write": "create users",
+        "update": "update users",
+        "delete": "delete users",
+        "superuser": "super user permission"
+      },
+      "type": "oauth2"
+    }
+  },
+  "definitions": {
+    "User": {
+      "type": "object",
+      "properties": {
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "age": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "required": [
+        "firstName",
+        "lastName",
+        "age"
+      ]
+    },
+    "UserWithUserName": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/User"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "username": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "username"
+          ]
+        }
+      ]
+    },
+    "UserWithExtraFields": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/UserWithUserName"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "createdOn": {
+              "type": "string",
+              "format": "datetime"
+            },
+            "userId": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "createdOn",
+            "userId"
+          ]
+        }
+      ]
+    }
+  },
+  "parameters": {
+    "CreateNewPersonParameter": {
+      "name": "person",
+      "in": "body",
+      "description": "The person to create.",
+      "schema": {
+        "$ref": "#/definitions/UserWithUserName"
+      }
+    },
+    "OffSetParameter": {
+      "name": "offset",
+      "in": "query",
+      "description": "Some description for offset",
+      "type": "integer"
+    },
+    "LimitParameter": {
+      "name": "limit",
+      "in": "query",
+      "description": "Some description for limit",
+      "type": "integer"
+    },
+    "UserNameParameterInPath": {
+      "name": "username",
+      "in": "path",
+      "required": true,
+      "description": "username of the user",
+      "type": "string"
+    },
+    "UserParameterInBody": {
+      "name": "user",
+      "in": "body",
+      "description": "user data containing first_name last_name and age",
+      "schema": {
+        "$ref": "#/definitions/User"
+      }
+    }
+  },
+  "responses": {
+    "CreateNewPersonResponse": {
+      "description": "Success Response",
+      "schema": {
+        "$ref": "#/definitions/UserWithExtraFields"
+      }
+    },
+    "GetPersonsListResponse": {
+      "description": "Get a list of Persons as a response",
+      "schema": {
+        "type": "array",
+        "items": {
+          "$ref": "#/definitions/UserWithExtraFields"
+        }
+      }
+    },
+    "GetUserObjectResponse": {
+      "description": "Get a user object as response",
+      "schema": {
+        "$ref": "#/definitions/User"
+      }
+    }
+  },
+  "paths": {
+    "/person/create/": {
+      "post": {
+        "operationId": "create_person",
+        "summary": "Create New Person",
+        "description": "Creates a new person and return the user object. This api is not idempotent.",
+        "security": [
+          {
+            "oauth": [
+              "superuser"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/CreateNewPersonParameter"
+          }
+        ],
+        "responses": {
+          "201": {
+            "$ref": "#/responses/CreateNewPersonResponse"
+          }
+        }
+      }
+    },
+    "/persons/": {
+      "get": {
+        "operationId": "get_persons",
+        "summary": "Get list of persons",
+        "description": "Returns a list of persons",
+        "security": [
+          {
+            "oauth": [
+              "superuser"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/OffSetParameter"
+          },
+          {
+            "$ref": "#/parameters/LimitParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/GetPersonsListResponse"
+          }
+        }
+      }
+    },
+    "/persons/{username}/": {
+      "get": {
+        "operationId": "get_user",
+        "summary": "Get User object",
+        "description": "Returns a User object with given username",
+        "security": [
+          {
+            "oauth": [
+              "superuser"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/UserNameParameterInPath"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/GetUserObjectResponse"
+          }
+        }
+      },
+      "put": {
+        "operationId": "put_user",
+        "summary": "Updates a user object",
+        "description": "updates the  user object with given user object",
+        "security": [
+          {
+            "oauth": [
+              "superuser"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/UserParameterInBody"
+          },
+          {
+            "$ref": "#/parameters/UserNameParameterInPath"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updated user object"
+          }
+        }
+      },
+      "delete": {
+        "operationId": "delete_user",
+        "summary": "deletes  a user object",
+        "description": "deletes a user object with the given username",
+        "security": [
+          {
+            "oauth": [
+              "superuser"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/UserNameParameterInPath"
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Deleted user object with given user name"
+          }
+        }
+      }
+    }
+  }
+}
+
+
+
+

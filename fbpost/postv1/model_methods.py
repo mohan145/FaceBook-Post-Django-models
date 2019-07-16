@@ -16,7 +16,7 @@ class ReactionType(Enum):
 
 
 def create_post(user_id, post_content):
-    # done
+    # done opt
     try:
         user = User.objects.get(id=user_id)
     except User.DoesNotExist:
@@ -57,9 +57,6 @@ def get_reactions_data(reactions):
 def get_comment(comment):
     res_dict = dict()
     res_dict.update({"comment_id": comment.id})
-
-    # user data
-    # user = User.objects.get(id=comment.commented_by.id)
 
     user_data = get_user_data(comment.commented_by)
 
@@ -276,7 +273,7 @@ def get_reactions_to_post(post_id):
     try:
         post = Post.objects.prefetch_related('reactions', 'reactions__user').get(id=post_id)
     except Post.DoesNotExist:
-        raise Exception("Post does not exist")
+        raise Exception("Post Does not Exist")
 
     result = []
 
@@ -295,7 +292,7 @@ def get_reaction_metrics(post_id):
 
         Post.objects.get(id=post_id)
     except Post.DoesNotExist:
-        raise Exception("Post does not exist")
+        raise Exception("Post Does not Exist")
 
     count_object = Count('reaction')
 

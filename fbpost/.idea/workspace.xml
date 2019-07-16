@@ -2,10 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a1014689-d74e-4c67-9201-1294020aa10d" name="Default Changelist" comment="">
+<<<<<<< HEAD
       <change afterPath="$PROJECT_DIR$/.idea/markdown-exported-files.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.idea/markdown-navigator.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.idea/markdown-navigator/profiles_settings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+=======
+      <change beforePath="$PROJECT_DIR$/fbapi/api_specs/api_spec.json" beforeDir="false" afterPath="$PROJECT_DIR$/fbapi/api_specs/api_spec.json" afterDir="false" />
+>>>>>>> b1dfc0cb5ec590784216accfee6b9932047ef9b8
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -18,8 +22,13 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test_dir/test_comment_methods.py">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state relative-caret-position="1635">
               <caret line="112" column="53" selection-start-line="112" selection-start-column="53" selection-end-line="112" selection-end-column="53" />
+=======
+            <state relative-caret-position="1170">
+              <caret line="81" column="31" selection-start-line="81" selection-start-column="31" selection-end-line="81" selection-end-column="31" />
+>>>>>>> b1dfc0cb5ec590784216accfee6b9932047ef9b8
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
               </folding>
@@ -28,10 +37,37 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+<<<<<<< HEAD
         <entry file="file://$PROJECT_DIR$/test_dir/test_post_methods.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="1046">
               <caret line="136" selection-start-line="136" selection-end-line="136" />
+=======
+        <entry file="file://$PROJECT_DIR$/test_dir/conftest.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="75">
+              <caret line="8" selection-start-line="8" selection-end-line="8" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/test_dir/utility_functions.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <folding>
+                <element signature="e#0#55#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/test_dir/test_post_methods.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="641">
+              <caret line="109" selection-start-line="109" selection-end-line="109" />
+>>>>>>> b1dfc0cb5ec590784216accfee6b9932047ef9b8
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
               </folding>
@@ -39,11 +75,28 @@
           </provider>
         </entry>
       </file>
+<<<<<<< HEAD
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/postv1/model_methods.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="594">
               <caret line="413" lean-forward="true" selection-start-line="413" selection-end-line="413" />
+=======
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/fbapi/apps.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="75">
+              <caret line="5" lean-forward="true" selection-start-line="5" selection-end-line="5" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/postv1/model_methods.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="15">
+              <caret line="59" selection-start-line="59" selection-end-line="59" />
+>>>>>>> b1dfc0cb5ec590784216accfee6b9932047ef9b8
               <folding>
                 <element signature="e#0#49#0" expanded="true" />
               </folding>
@@ -51,6 +104,18 @@
           </provider>
         </entry>
       </file>
+<<<<<<< HEAD
+=======
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/fbapi/api_specs/api_spec.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="330">
+              <caret line="61" column="25" lean-forward="true" selection-start-line="61" selection-start-column="25" selection-end-line="61" selection-end-column="25" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+>>>>>>> b1dfc0cb5ec590784216accfee6b9932047ef9b8
     </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
@@ -63,6 +128,10 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>delet</find>
+      <find>&quot;LIKE&quot;</find>
+      <find>&quot;WOW&quot;</find>
+      <find>&quot;HAHA&quot;</find>
+      <find>&quot;LOL&quot;</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -75,16 +144,28 @@
         <option value="$PROJECT_DIR$/pytest.ini" />
         <option value="$PROJECT_DIR$/test_dir/test_practice.py" />
         <option value="$PROJECT_DIR$/test_dir/test_smtpsimple.py" />
-        <option value="$PROJECT_DIR$/postv1/model_methods.py" />
+        <option value="$PROJECT_DIR$/test_dir/__init__.py" />
+        <option value="$PROJECT_DIR$/test_dir/utility_functions.py" />
+        <option value="$PROJECT_DIR$/test_dir/conftest.py" />
         <option value="$PROJECT_DIR$/test_dir/test_comment_methods.py" />
+        <option value="$PROJECT_DIR$/postv1/model_methods.py" />
         <option value="$PROJECT_DIR$/test_dir/test_post_methods.py" />
+        <option value="$PROJECT_DIR$/fbpost/settings.py" />
+        <option value="$PROJECT_DIR$/fbapi/api_specs/api_spec.json" />
       </list>
     </option>
   </component>
+<<<<<<< HEAD
   <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="1060" />
     <option name="y" value="25" />
     <option name="width" value="860" />
+=======
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="506" />
+    <option name="y" value="25" />
+    <option name="width" value="1414" />
+>>>>>>> b1dfc0cb5ec590784216accfee6b9932047ef9b8
     <option name="height" value="1055" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -102,6 +183,25 @@
             </path>
             <path>
               <item name="fbpost" type="b2602c69:ProjectViewProjectNode" />
+<<<<<<< HEAD
+=======
+              <item name="fbpost" type="462c0819:PsiDirectoryNode" />
+              <item name="fbapi" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="fbpost" type="b2602c69:ProjectViewProjectNode" />
+              <item name="fbpost" type="462c0819:PsiDirectoryNode" />
+              <item name="fbapi" type="462c0819:PsiDirectoryNode" />
+              <item name="api_specs" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="fbpost" type="b2602c69:ProjectViewProjectNode" />
+              <item name="fbpost" type="462c0819:PsiDirectoryNode" />
+              <item name="fbpost" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="fbpost" type="b2602c69:ProjectViewProjectNode" />
+>>>>>>> b1dfc0cb5ec590784216accfee6b9932047ef9b8
               <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
             </path>
             <path>
@@ -122,7 +222,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="Python" />
+    <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="JSON&#10;Python" />
     <property name="last_opened_file_path" value="$USER_HOME$/Desktop/learning/practice_problems/Django/fb_post_v3/django_db_practice.md" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
@@ -152,10 +252,14 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="67" y="25" width="1853" height="1055" extended-state="7" />
+    <frame x="67" y="25" width="1853" height="1055" extended-state="6" />
     <editor active="true" />
     <layout>
+<<<<<<< HEAD
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15737705" />
+=======
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.15737705" />
+>>>>>>> b1dfc0cb5ec590784216accfee6b9932047ef9b8
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -166,7 +270,7 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.32937366" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="8" visible="true" weight="0.22138229" />
+      <window_info anchor="bottom" id="Terminal" order="8" visible="true" weight="0.22138229" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
       <window_info anchor="bottom" id="Python Console" order="10" weight="0.32937366" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -225,11 +329,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/fbpost/settings.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-252" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Untitled1.ipynb">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="495">
@@ -240,28 +339,12 @@
     <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/aggregation/tests.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="3" selection-start-line="3" selection-end-line="3" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/test_dir/dontuse_test_smtpsimple.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="210">
           <caret line="14" selection-start-line="14" selection-end-line="14" />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/fbpost/wsgi.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/postv1/views.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/postv1/apps.py">
-      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/test_dir/dontuse_test_practice.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -273,8 +356,56 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$USER_HOME$/Desktop/learning/practice_problems/Django/fb_post_v3/django_db_practice.md" />
+    <entry file="file://$PROJECT_DIR$/aggregation/tests.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" selection-start-line="3" selection-end-line="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/postv1/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="19" selection-start-line="19" selection-end-line="19" />
+          <folding>
+            <element signature="e#0#28#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/pytest.ini">
       <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" selection-start-line="4" selection-end-line="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fbpost/wsgi.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test_dir/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/postv1/views.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/postv1/apps.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test_dir/test_comment_methods.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1170">
+          <caret line="81" column="31" selection-start-line="81" selection-start-column="31" selection-end-line="81" selection-end-column="31" />
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test_dir/conftest.py">
+      <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="60">
           <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
         </state>
@@ -282,42 +413,84 @@
     </entry>
     <entry file="file://$USER_HOME$/Desktop/learning/practice_problems/Django/fb_post_v3/django_db_practice.md" />
     <entry file="file://$PROJECT_DIR$/postv1/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
-          <folding>
-            <element signature="e#0#28#0" expanded="true" />
-          </folding>
+=======
+        <state relative-caret-position="75">
+          <caret line="8" selection-start-line="8" selection-end-line="8" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test_dir/test_comment_methods.py">
+    <entry file="file://$PROJECT_DIR$/test_dir/utility_functions.py">
+>>>>>>> b1dfc0cb5ec590784216accfee6b9932047ef9b8
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1635">
-          <caret line="112" column="53" selection-start-line="112" selection-start-column="53" selection-end-line="112" selection-end-column="53" />
+        <state>
           <folding>
-            <element signature="e#0#13#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/postv1/model_methods.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="594">
-          <caret line="413" lean-forward="true" selection-start-line="413" selection-end-line="413" />
-          <folding>
-            <element signature="e#0#49#0" expanded="true" />
+            <element signature="e#0#55#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/test_dir/test_post_methods.py">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
+        <state relative-caret-position="1635">
+          <caret line="112" column="53" selection-start-line="112" selection-start-column="53" selection-end-line="112" selection-end-column="53" />
+=======
+        <state relative-caret-position="641">
+          <caret line="109" selection-start-line="109" selection-end-line="109" />
+>>>>>>> b1dfc0cb5ec590784216accfee6b9932047ef9b8
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fbpost/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="525">
+          <caret line="35" column="28" lean-forward="true" selection-start-line="35" selection-start-column="28" selection-end-line="35" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fbapi/apps.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" lean-forward="true" selection-start-line="5" selection-end-line="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch.json">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch_1.json">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/postv1/model_methods.py">
+      <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
+        <state relative-caret-position="594">
+          <caret line="413" lean-forward="true" selection-start-line="413" selection-end-line="413" />
+=======
+        <state relative-caret-position="15">
+          <caret line="59" selection-start-line="59" selection-end-line="59" />
+>>>>>>> b1dfc0cb5ec590784216accfee6b9932047ef9b8
+          <folding>
+            <element signature="e#0#49#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fbapi/api_specs/api_spec.json">
+      <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="1046">
           <caret line="136" selection-start-line="136" selection-end-line="136" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
           </folding>
+=======
+        <state relative-caret-position="330">
+          <caret line="61" column="25" lean-forward="true" selection-start-line="61" selection-start-column="25" selection-end-line="61" selection-end-column="25" />
+>>>>>>> b1dfc0cb5ec590784216accfee6b9932047ef9b8
         </state>
       </provider>
     </entry>

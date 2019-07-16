@@ -1,30 +1,7 @@
 import pytest
 from postv1.models import User, Post, Reaction, Comment
 from postv1.model_methods import react_to_comment, ReactionType
-
-
-def create_user(name, url):
-    user = User.objects.create(name=name, profile_pic_url=url)
-    return user
-
-
-def create_comment(uname, url, content):
-    user = create_user(uname, url)
-    comment = Comment.objects.create(commented_by=user, content=content)
-    return comment
-
-
-def create_post_data(content, uname, url):
-    user = create_user(uname, url)
-    post = Post.objects.create(content=content, posted_by=user)
-    post.reactions.create(reaction='LIKE', user=user)
-    post.comments.create(commented_by=user, content='comment1')
-
-    post.comments.all()[0].reactions.create(user=user, reaction='WOW')
-    post.comments.all()[0].replies.create(commented_by=user, content="reply1")
-    post.comments.all()[0].replies.all()[0].reactions.create(user=user, reaction='HAHA')
-
-    return post
+from .utility_functions import create_user, create_post_data, create_comment
 
 
 @pytest.fixture
@@ -51,8 +28,8 @@ def test_react_to_post_reaction_dne_exception(user_setup):
     user = User.objects.get(name='user1')
 
     with pytest.raises(Exception) as e:
-        react_to_comment(user.id, comment_id=1, reaction_type='LOL')
-        print(e.value)
+        react_to_comment(user.id, comment_id=1, reaction_type=ReactionType.HAHA.value)
+
     assert 'Comment does not exist' in str(e.value)
 
 
@@ -68,8 +45,7 @@ def test_given_reaction_type_exists_reaction(user_setup):
 
 
 @pytest.mark.django_db
-def test_react_to_post_reaction_not_corresponding_user_post_create_reaction(user_setup,post_setup):
-
+def test_react_to_post_reaction_not_corresponding_user_post_create_reaction(user_setup, post_setup):
     post = Post.objects.get(content='post1')
     comment = post.comments.get(id=1)
 
@@ -89,14 +65,9 @@ def test_react_to_post_reaction_not_corresponding_user_post_create_reaction(user
 
 @pytest.mark.django_db
 def test_react_to_post_user_cooresponding_post_same_reaction(post_setup):
-
     post = Post.objects.get(content='post1')
     comment = post.comments.get(id=1)
     user = comment.commented_by
-
-    # reactions = comment.reactions.all()[0].reaction
-    # print(reactions) #WOW
-
     react_to_comment(user.id, comment.id, ReactionType.WOW.value)
     reactions = comment.reactions.all()
 
@@ -105,12 +76,10 @@ def test_react_to_post_user_cooresponding_post_same_reaction(post_setup):
 
 @pytest.mark.django_db
 def test_react_to_post_user_corresponding_post_change_reaction(post_setup):
-
     post = Post.objects.get(content='post1')
     comment = post.comments.get(id=1)
 
     user = comment.commented_by
-    # print(comment.reactions.all()[0].reaction) #WOW
 
     react_to_comment(user.id, comment.id, ReactionType.HAHA.value)
     r = comment.reactions.get(id=2)
