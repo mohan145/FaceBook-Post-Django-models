@@ -1,0 +1,113 @@
+{
+  "swagger": "2.0",
+  "host": "127.0.0.1:8000",
+  "basePath": "/api/",
+  "info": {
+    "version": "1.0.0",
+    "title": "FaceBook Post API",
+    "description": "An API spec for a FaceBook Post"
+  },
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "securityDefinitions": {
+    "oauth": {
+      "tokenUrl": "http://auth.ibtspl.com/oauth2/",
+      "flow": "password",
+      "scopes": {
+        "read": "read users",
+        "write": "create users",
+        "update": "update users",
+        "delete": "delete users",
+        "superuser": "super user permission"
+      },
+      "type": "oauth2"
+    }
+  },
+  "definitions": {
+
+
+  },
+  "parameters": {
+
+    "CreateNewPostParameter": {
+      "name": "post_content",
+      "in": "body",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "post_content": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "post_content"
+        ]
+      }
+
+
+    }
+
+
+  },
+  "responses": {
+    "CreateNewPostIDResponse": {
+      "description": "Return id of a created post",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "post_id": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      }
+
+    }
+
+
+  },
+  "paths": {
+
+    "/fbpost/post/v1/": {
+
+      "post": {
+        "operationId": "create_post",
+        "summary": "create a new post",
+        "description": "create a new post with given content and returns post id",
+        "security": [
+          {
+            "oauth": [
+              "superuser"
+            ]
+          }
+        ],
+        "parameters":[{
+          "$ref": "#/parameters/CreateNewPostParameter"
+        }],
+        "responses":{
+          "200": {
+
+            "$ref": "#/responses/CreateNewPostIDResponse"
+}
+
+          }
+
+        }
+
+      }
+    }
+
+  }
+
+
+
+
+
