@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'aggregation.apps.AggregationConfig',
     'postv1.apps.Postv1Config',
+    'fbapi.apps.FbapiConfig'
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
