@@ -32,13 +32,165 @@
     }
   },
   "definitions": {
+    "User": {
+      "type": "object",
+      "properties": {
+        "user_id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "profile_pic_url": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "user_id",
 
+        "name"
+      ]
+    },
+    "Reaction": {
+      "type": "object",
+      "properties": {
+        "reaction_id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "reaction": {
+          "type": "string"
+        },
+        "reacted_by": {
+          "$ref": "#/definitions/User"
+        }
+      },
+      "required": [
+        "reaction_id",
+        "reaction",
+        "reacted_by"
+      ]
+    },
+    "ReactionData": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "types": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "HAHA",
+              "WOW",
+              "LIKE",
+              "SAD",
+              "ANGRY",
+              "LOL",
+              "LOVE"
+            ]
+          }
+        }
+      },
+      "required": [
+        "count",
+        "types"
+      ]
+    },
+    "Post": {
+      "type": "object",
+      "properties": {
+        "post_id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "content": {
+          "type": "string"
+        },
+        "posted_by": {
+          "$ref": "#/definitions/User"
+        },
+        "posted_at": {
+          "type": "string",
+          "format": "datetime"
+        },
+        "reactions": {
+          "$ref": "#/definitions/ReactionData"
+        },
+        "comments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Comment"
+          }
+        }
+      },
+      "required": [
+        "post_id",
+        "posted_by",
+        "posted_at"
+      ]
+    },
+    "Reply": {
+      "type": "object",
+      "properties": {
+        "comment_id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "content": {
+          "type": "string"
+        },
+        "commented_by": {
+          "$ref": "#/definitions/User"
+        },
+        "commented_at": {
+          "type": "string",
+          "format": "datetime"
+        },
+        "reactions": {
+          "$ref": "#/definitions/ReactionData"
+        },
 
+      },
+      "required": [
+        "comment_id",
+        "commented_at",
+        "commented_by"
+      ]
+    },
+
+    "Comment": {
+
+      "allOf": [{
+        "$ref": "#/definitions/Reply"
+      },
+        {
+          "type": "object",
+          "properties": {
+            "Replies": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Reply"
+              },
+            },
+            "replies_count": {
+          "type": "integer",
+          "format": "int64"
+        }
+
+          },
+          "required":["replies_count"]
+        }
+      ]
+
+    }
   },
   "parameters": {
-
     "CreateNewPostParameter": {
-      "name": "post_content",
+      "name": "CreateNewPostParameter",
       "in": "body",
       "schema": {
         "type": "object",
@@ -51,11 +203,7 @@
           "post_content"
         ]
       }
-
-
     }
-
-
   },
   "responses": {
     "CreateNewPostIDResponse": {
@@ -67,17 +215,15 @@
             "type": "integer",
             "format": "int64"
           }
-        }
+        },
+        "required": [
+          "post_id"
+        ]
       }
-
     }
-
-
   },
   "paths": {
-
     "/fbpost/post/v1/": {
-
       "post": {
         "operationId": "create_post",
         "summary": "create a new post",
@@ -89,23 +235,20 @@
             ]
           }
         ],
-        "parameters":[{
-          "$ref": "#/parameters/CreateNewPostParameter"
-        }],
-        "responses":{
-          "200": {
-
-            "$ref": "#/responses/CreateNewPostIDResponse"
-}
-
+        "parameters": [
+          {
+            "$ref": "#/parameters/CreateNewPostParameter"
           }
-
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/CreateNewPostIDResponse"
+          }
         }
-
       }
     }
-
   }
+}
 
 
 
