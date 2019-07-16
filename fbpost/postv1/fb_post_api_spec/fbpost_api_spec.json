@@ -1,3 +1,4 @@
+
 {
   "swagger": "2.0",
   "host": "127.0.0.1:8000",
@@ -48,7 +49,6 @@
       },
       "required": [
         "user_id",
-
         "name"
       ]
     },
@@ -60,7 +60,19 @@
           "format": "int64"
         },
         "reaction": {
-          "type": "string"
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "HAHA",
+              "WOW",
+              "LIKE",
+              "SAD",
+              "ANGRY",
+              "LOL",
+              "LOVE"
+            ]
+          }
         },
         "reacted_by": {
           "$ref": "#/definitions/User"
@@ -130,7 +142,10 @@
       "required": [
         "post_id",
         "posted_by",
-        "posted_at"
+        "posted_at",
+        "content",
+        "comments",
+        "reactions"
       ]
     },
     "Reply": {
@@ -152,40 +167,41 @@
         },
         "reactions": {
           "$ref": "#/definitions/ReactionData"
-        },
-
+        }
       },
       "required": [
         "comment_id",
         "commented_at",
-        "commented_by"
+        "commented_by",
+        "reactions",
+        "content"
       ]
     },
-
     "Comment": {
-
-      "allOf": [{
-        "$ref": "#/definitions/Reply"
-      },
+      "allOf": [
+        {
+          "$ref": "#/definitions/Reply"
+        },
         {
           "type": "object",
           "properties": {
-            "Replies": {
+            "replies": {
               "type": "array",
               "items": {
                 "$ref": "#/definitions/Reply"
-              },
+              }
             },
             "replies_count": {
-          "type": "integer",
-          "format": "int64"
-        }
-
+              "type": "integer",
+              "format": "int64"
+            }
           },
-          "required":["replies_count"]
+          "required": [
+            "replies_count",
+            "replies"
+          ]
         }
       ]
-
     }
   },
   "parameters": {
