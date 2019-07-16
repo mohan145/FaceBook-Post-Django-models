@@ -80,15 +80,48 @@
       ]
     }
   },
+
+
+
   "parameters": {
     "CreateNewPersonParameter": {
+
       "name": "person",
       "in": "body",
       "description": "The person to create.",
       "schema": {
         "$ref": "#/definitions/User"
       }
+    },
+
+    "CreateNewOffSetParameter": {
+
+      "name": "offset",
+      "in": "query",
+      "description": "Some description for offset",
+      "type": "integer"
+    },
+
+    "CreateNewLimitParameter": {
+      "name": "limit",
+      "in": "query",
+      "description": "Some description for limit",
+      "type": "integer"
+    },
+
+    "UserNameParameter": {
+      "name": "username",
+            "in": "path",
+            "required":true,
+            "description": "username of the user",
+            "type": "string"
     }
+
+
+
+
+
+
   },
   "responses": {
     "CreateNewPersonResponse": {
@@ -96,8 +129,34 @@
       "schema": {
         "$ref": "#/definitions/UserWithExtraFields"
       }
+    },
+
+    "CreateNewPersonListResponse": {
+      "description": "OK status code",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/UserWithExtraFields"
+              }
+            }
+    },
+
+    "CreateNewUserObjectResponese": {
+         "description": "OK status code",
+            "schema": {
+              "type": "object",
+
+                "$ref": "#/definitions/User"
+
+            }
     }
   },
+
+
+
+
+
+
   "paths": {
     "/person/create/": {
       "post": {
@@ -113,72 +172,13 @@
         ],
         "parameters": [
           {
-            "name": "person",
-            "in": "body",
-            "required": true,
-            "description": "The Person to create.",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "firstName": {
-                  "type": "string"
-                },
-                "lastname": {
-                  "type": "string"
-                },
-                "username": {
-                  "type": "string"
-                },
-                "age": {
-                  "type": "integer",
-                  "format": "int64"
-                }
-              },
-              "required": [
-                "firstName",
-                "lastName",
-                "username",
-                "age"
-              ]
-            }
+            "$ref": "#/parameters/CreateNewPersonParameter"
           }
         ],
         "responses": {
           "201": {
-            "description": "Success Response",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "createdOn": {
-                  "type": "string",
-                  "format": "datetime"
-                },
-                "firstName": {
-                  "type": "string"
-                },
-                "lastName": {
-                  "type": "string"
-                },
-                "username": {
-                  "type": "string"
-                },
-                "age": {
-                  "type": "integer",
-                  "format": "int64"
-                },
-                "userId": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "createdOn",
-                "firstName",
-                "lastName",
-                "username",
-                "age",
-                "userId"
-              ]
-            }
+
+            "$ref": "#/responses/CreateNewPersonResponse"
           }
         }
       }
@@ -200,34 +200,24 @@
 
         "parameters": [
           {
-            "name": "offset",
-            "in": "query",
-            "description": "Some description for offset",
-            "type": "integer"
+            "$ref": "#/parameters/CreateNewOffSetParameter"
           },
           {
-            "name": "limit",
-            "in": "query",
-            "description": "Some description for limit",
-            "type": "integer"
+            "$ref": "#/parameters/CreateNewLimitParameter"
           }
         ],
+
+
         "responses": {
           "200": {
-            "description": "OK status code",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/UserWithExtraFields"
-              }
-            }
+            "$ref": "#/responses/CreateNewPersonListResponse"
           }
         }
       }
     },
 
 
-    "/persons/{username}": {
+    "/persons/{username}/": {
       "get": {
         "operationId": "get_user",
         "summary": "Get User object",
@@ -242,23 +232,13 @@
 
         "parameters": [
           {
-            "name": "username",
-            "in": "path",
-            "required":true,
-            "description": "username of the user",
-            "type": "string"
+            "$ref": "#/parameters/UserNameParameter"
           }
 
         ],
         "responses": {
           "200": {
-            "description": "OK status code",
-            "schema": {
-              "type": "object",
-
-                "$ref": "#/definitions/User"
-
-            }
+         "$ref": "#/responses/CreateNewUserObjectResponese"
           }
         }
       }
