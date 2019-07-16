@@ -58,6 +58,7 @@
           "$ref": "#/definitions/User"
         },
         {
+          "type": "object",
           "properties": {
             "username": {
               "type": "string"
@@ -230,7 +231,7 @@
       },
       "put": {
         "operationId": "put_user",
-        "summary": "puts a user object",
+        "summary": "Updates a user object",
         "description": "updates the  user object with given user object",
         "security": [
           {
@@ -249,7 +250,7 @@
         ],
         "responses": {
           "200": {
-            "description": "put given user object"
+            "description": "Updated user object"
           }
         }
       },

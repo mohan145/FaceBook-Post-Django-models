@@ -80,8 +80,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/fbapi/api_specs/api_spec.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4005">
-              <caret line="273" column="69" lean-forward="true" selection-start-line="273" selection-start-column="69" selection-end-line="273" selection-end-column="69" />
+            <state relative-caret-position="330">
+              <caret line="61" column="25" lean-forward="true" selection-start-line="61" selection-start-column="25" selection-end-line="61" selection-end-column="25" />
             </state>
           </provider>
         </entry>
@@ -417,8 +417,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/fbapi/api_specs/api_spec.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4005">
-          <caret line="273" column="69" lean-forward="true" selection-start-line="273" selection-start-column="69" selection-end-line="273" selection-end-column="69" />
+        <state relative-caret-position="330">
+          <caret line="61" column="25" lean-forward="true" selection-start-line="61" selection-start-column="25" selection-end-line="61" selection-end-column="25" />
         </state>
       </provider>
     </entry>
