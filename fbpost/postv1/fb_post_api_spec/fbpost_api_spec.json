@@ -221,7 +221,7 @@
     },
 
     "PostIdParameter": {
-      "name": "PostIdParameter",
+      "name": "post_id",
       "in": "path",
       "description":"Given Post ID",
       "type":"integer",
@@ -280,7 +280,7 @@
       }
     },
 
-    "/post/post_id/v1/": {
+    "/post/{post_id}/v1/": {
       "get": {
         "operationId": "get_post",
         "summary": "get post data",
