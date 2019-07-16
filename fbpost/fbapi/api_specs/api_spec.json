@@ -41,9 +41,6 @@
         "lastName": {
           "type": "string"
         },
-        "username": {
-          "type": "string"
-        },
         "age": {
           "type": "integer",
           "format": "int64"
@@ -52,14 +49,30 @@
       "required": [
         "firstName",
         "lastName",
-        "username",
         "age"
+      ]
+    },
+    "UserWithUserName": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/User"
+        },
+        {
+          "properties": {
+            "username": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "username"
+          ]
+        }
       ]
     },
     "UserWithExtraFields": {
       "allOf": [
         {
-          "$ref": "#/definitions/User"
+          "$ref": "#/definitions/UserWithUserName"
         },
         {
           "type": "object",
@@ -80,48 +93,42 @@
       ]
     }
   },
-
-
-
   "parameters": {
     "CreateNewPersonParameter": {
-
       "name": "person",
       "in": "body",
       "description": "The person to create.",
       "schema": {
-        "$ref": "#/definitions/User"
+        "$ref": "#/definitions/UserWithUserName"
       }
     },
-
-    "CreateNewOffSetParameter": {
-
+    "OffSetParameter": {
       "name": "offset",
       "in": "query",
       "description": "Some description for offset",
       "type": "integer"
     },
-
-    "CreateNewLimitParameter": {
+    "LimitParameter": {
       "name": "limit",
       "in": "query",
       "description": "Some description for limit",
       "type": "integer"
     },
-
-    "UserNameParameter": {
+    "UserNameParameterInPath": {
       "name": "username",
-            "in": "path",
-            "required":true,
-            "description": "username of the user",
-            "type": "string"
+      "in": "path",
+      "required": true,
+      "description": "username of the user",
+      "type": "string"
+    },
+    "UserParameterInBody": {
+      "name": "user",
+      "in": "body",
+      "description": "user data containing first_name last_name and age",
+      "schema": {
+        "$ref": "#/definitions/User"
+      }
     }
-
-
-
-
-
-
   },
   "responses": {
     "CreateNewPersonResponse": {
@@ -130,33 +137,22 @@
         "$ref": "#/definitions/UserWithExtraFields"
       }
     },
-
-    "CreateNewPersonListResponse": {
-      "description": "OK status code",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/UserWithExtraFields"
-              }
-            }
+    "GetPersonsListResponse": {
+      "description": "Get a list of Persons as a response",
+      "schema": {
+        "type": "array",
+        "items": {
+          "$ref": "#/definitions/UserWithExtraFields"
+        }
+      }
     },
-
-    "CreateNewUserObjectResponese": {
-         "description": "OK status code",
-            "schema": {
-              "type": "object",
-
-                "$ref": "#/definitions/User"
-
-            }
+    "GetUserObjectResponse": {
+      "description": "Get a user object as response",
+      "schema": {
+        "$ref": "#/definitions/User"
+      }
     }
   },
-
-
-
-
-
-
   "paths": {
     "/person/create/": {
       "post": {
@@ -177,14 +173,11 @@
         ],
         "responses": {
           "201": {
-
             "$ref": "#/responses/CreateNewPersonResponse"
           }
         }
       }
     },
-
-
     "/persons/": {
       "get": {
         "operationId": "get_persons",
@@ -197,26 +190,21 @@
             ]
           }
         ],
-
         "parameters": [
           {
-            "$ref": "#/parameters/CreateNewOffSetParameter"
+            "$ref": "#/parameters/OffSetParameter"
           },
           {
-            "$ref": "#/parameters/CreateNewLimitParameter"
+            "$ref": "#/parameters/LimitParameter"
           }
         ],
-
-
         "responses": {
           "200": {
-            "$ref": "#/responses/CreateNewPersonListResponse"
+            "$ref": "#/responses/GetPersonsListResponse"
           }
         }
       }
     },
-
-
     "/persons/{username}/": {
       "get": {
         "operationId": "get_user",
@@ -229,27 +217,68 @@
             ]
           }
         ],
-
         "parameters": [
           {
-            "$ref": "#/parameters/UserNameParameter"
+            "$ref": "#/parameters/UserNameParameterInPath"
           }
-
         ],
         "responses": {
           "200": {
-         "$ref": "#/responses/CreateNewUserObjectResponese"
+            "$ref": "#/responses/GetUserObjectResponse"
+          }
+        }
+      },
+      "put": {
+        "operationId": "put_user",
+        "summary": "puts a user object",
+        "description": "updates the  user object with given user object",
+        "security": [
+          {
+            "oauth": [
+              "superuser"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/UserParameterInBody"
+          },
+          {
+            "$ref": "#/parameters/UserNameParameterInPath"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "put given user object"
+          }
+        }
+      },
+      "delete": {
+        "operationId": "delete_user",
+        "summary": "deletes  a user object",
+        "description": "deletes a user object with the given username",
+        "security": [
+          {
+            "oauth": [
+              "superuser"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/UserNameParameterInPath"
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Deleted user object with given user name"
           }
         }
       }
     }
-
-
-
-
-
-
-
-
   }
 }
+
+
+
+
