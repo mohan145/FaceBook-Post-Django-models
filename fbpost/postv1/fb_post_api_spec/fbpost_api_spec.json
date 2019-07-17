@@ -32,21 +32,30 @@
     }
   },
   "definitions": {
-
     "PostId": {
       "type": "object",
       "properties": {
         "post_id": {
           "type": "integer",
           "format": "int64"
-        },
-
+        }
       },
       "required": [
         "post_id"
       ]
     },
-
+    "PostIdsList": {
+      "type": "object",
+      "properties": {
+        "post_ids": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      }
+    },
     "User": {
       "type": "object",
       "properties": {
@@ -127,46 +136,42 @@
       ]
     },
     "Post": {
-
       "allOf": [
         {
           "$ref": "#/definitions/PostId"
         },
         {
           "type": "object",
-      "properties": {
-
-        "content": {
-          "type": "string"
-        },
-        "posted_by": {
-          "$ref": "#/definitions/User"
-        },
-        "posted_at": {
-          "type": "string",
-          "format": "datetime"
-        },
-        "reactions": {
-          "$ref": "#/definitions/ReactionData"
-        },
-        "comments": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Comment"
-          }
+          "properties": {
+            "content": {
+              "type": "string"
+            },
+            "posted_by": {
+              "$ref": "#/definitions/User"
+            },
+            "posted_at": {
+              "type": "string",
+              "format": "datetime"
+            },
+            "reactions": {
+              "$ref": "#/definitions/ReactionData"
+            },
+            "comments": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Comment"
+              }
+            }
+          },
+          "required": [
+            "posted_by",
+            "posted_at",
+            "content",
+            "comments",
+            "reactions"
+          ]
         }
-      },
-      "required": [
-        "posted_by",
-        "posted_at",
-        "content",
-        "comments",
-        "reactions"
       ]
-        }
-      ]
-
-
     },
     "Reply": {
       "type": "object",
@@ -275,19 +280,10 @@
     }
   },
   "responses": {
-    "CreateNewPostIDResponse": {
+    "CreatePostResponse": {
       "description": "Return id of a created post",
       "schema": {
-        "type": "object",
-        "properties": {
-          "post_id": {
-            "type": "integer",
-            "format": "int64"
-          }
-        },
-        "required": [
-          "post_id"
-        ]
+        "$ref": "#/definitions/PostId"
       }
     },
     "GetPostResponse": {
@@ -296,7 +292,7 @@
         "$ref": "#/definitions/Post"
       }
     },
-    "GetUserPostsListResponse": {
+    "GetUserPostsResponse": {
       "description": "Return a list of posts posted with a given user id",
       "schema": {
         "type": "array",
@@ -305,8 +301,7 @@
         }
       }
     },
-
-    "GetPostReactionsListResponse": {
+    "GetReactionsToPostResponse": {
       "description": "List of reactions for a given post",
       "schema": {
         "type": "array",
@@ -315,14 +310,10 @@
         }
       }
     },
-
-    "GetPostIdListResponse": {
+    "GetPostsReactedByUserResponse": {
       "description": "Get List of Post Ids",
       "schema": {
-        "type": "array",
-        "items": {
-          "$ref": "#/definitions/PostId"
-        }
+        "$ref": "#/definitions/PostIdsList"
       }
     }
   },
@@ -346,7 +337,7 @@
         ],
         "responses": {
           "200": {
-            "$ref": "#/responses/CreateNewPostIDResponse"
+            "$ref": "#/responses/CreatePostResponse"
           }
         }
       }
@@ -422,11 +413,17 @@
         }
       }
     },
-
     "/post/{post_id}/reaction/v1/": {
       "get": {
         "summary": "get reactions to a post",
         "operationId": "get_reactions_to_a_post",
+        "security": [
+          {
+            "oauth": [
+              "superuser"
+            ]
+          }
+        ],
         "parameters": [
           {
             "$ref": "#/parameters/PostIdParameter"
@@ -434,28 +431,31 @@
         ],
         "responses": {
           "200": {
-            "$ref": "#/responses/GetPostReactionsListResponse"
+            "$ref": "#/responses/GetReactionsToPostResponse"
           }
         }
       }
     },
-
-
     "/user/reactedpost/": {
       "get": {
         "summary": "posts reacted by user",
         "operationId": "get_posts_reacted_by_user",
+        "security": [
+          {
+            "oauth": [
+              "superuser"
+            ]
+          }
+        ],
         "parameters": [
-
         ],
         "responses": {
           "200": {
-            "$ref": "#/responses/GetPostIdListResponse"
+            "$ref": "#/responses/GetPostsReactedByUserResponse"
           }
         }
       }
     },
-
     "/user/post/v1/": {
       "get": {
         "operationId": "get_user_posts",
@@ -472,7 +472,7 @@
         ],
         "responses": {
           "200": {
-            "$ref": "#/responses/GetUserPostsListResponse"
+            "$ref": "#/responses/GetUserPostsResponse"
           }
         }
       }
