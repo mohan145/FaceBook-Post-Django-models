@@ -219,13 +219,20 @@
         ]
       }
     },
-
     "PostIdParameter": {
       "name": "post_id",
       "in": "path",
-      "description":"Given Post ID",
-      "type":"integer",
-      "format":"int64",
+      "description": "Given Post ID",
+      "type": "integer",
+      "format": "int64",
+      "required": true
+    },
+    "UserIdParameter": {
+      "name": "user_id",
+      "in": "path",
+      "description": "Given User ID",
+      "type": "integer",
+      "format": "int64",
       "required": true
     }
   },
@@ -245,13 +252,20 @@
         ]
       }
     },
-
     "GetPostResponse": {
       "description": "Return data of an entire post given a post id",
       "schema": {
         "$ref": "#/definitions/Post"
       }
-
+    },
+    "GetUserPostsListResponse": {
+      "description": "Return a list of posts posted with a given user id",
+      "schema": {
+        "type": "array",
+        "items": {
+          "$ref": "#/definitions/Post"
+        }
+      }
     }
   },
   "paths": {
@@ -279,7 +293,6 @@
         }
       }
     },
-
     "/post/{post_id}/v1/": {
       "get": {
         "operationId": "get_post",
@@ -302,10 +315,46 @@
             "$ref": "#/responses/GetPostResponse"
           }
         }
+      },
+      "delete": {
+        "summary": "delete a post",
+        "operationId": "delete_post",
+        "description": "delete a post given a post id",
+        "parameters": [
+          {
+            "$ref": "#/parameters/PostIdParameter"
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Deleted post with given post id"
+          }
+        }
+      }
+    },
+    "/user/{user_id}/post/v1/": {
+      "get": {
+        "operationId": "get_user_posts",
+        "summary": "get posts of a user",
+        "description": "Return a list of posts posted by a given user",
+        "security": [
+          {
+            "oauth": [
+              "superuser"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/UserIdParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/GetUserPostsListResponse"
+          }
+        }
       }
     }
-
-
-
   }
 }
