@@ -284,8 +284,8 @@
         ]
       }
     },
-    "CreateCommentParameter": {
-      "name": "CreateCommentParameter",
+    "AddCommentParameter": {
+      "name": "AddCommentParameter",
       "in": "body",
       "schema": {
         "type": "object",
@@ -299,6 +299,21 @@
         ]
       }
     },
+    "ReplyToCommentParameter": {
+      "name": "ReplyToCommentParameter",
+      "in": "body",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "reply_content": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "reply_content"
+        ]
+      }
+    },
     "PostIdParameter": {
       "name": "post_id",
       "in": "path",
@@ -308,7 +323,7 @@
       "required": true
     },
 
-    "CommentIdParameter": {
+    "CommentIdPathParameter": {
       "name": "comment_id",
       "in": "path",
       "description": "Given Comment Id",
@@ -399,6 +414,21 @@
       "description": "Add a comment to a given post",
       "schema": {
         "$ref": "#/definitions/CommentId"
+      }
+    },
+    "ReplyToACommentResponse": {
+      "description": "reply to a comment given a comment id",
+      "schema": {
+        "$ref": "#/definitions/CommentId"
+      }
+    },
+    "GetRepliesForCommentResponse": {
+      "description": "Get all the replies for a given comment",
+      "schema": {
+        "type": "array",
+        "items": {
+          "$ref": "#/definitions/Reply"
+        }
       }
     }
   },
@@ -624,7 +654,7 @@
             "$ref": "#/parameters/PostIdParameter"
           },
           {
-            "$ref": "#/parameters/CreateCommentParameter"
+            "$ref": "#/parameters/AddCommentParameter"
           }
         ],
         "responses": {
@@ -648,7 +678,7 @@
         ],
         "parameters": [
           {
-            "$ref": "#/parameters/CommentIdParameter"
+            "$ref": "#/parameters/CommentIdPathParameter"
           },
           {
             "$ref": "#/parameters/ReactionTypeParameter"
@@ -658,6 +688,59 @@
         "responses": {
           "200": {
             "description": "Reacted to the comment successfully"
+          }
+        }
+      }
+    },
+
+    "/comment/{comment_id}/reply/v1/": {
+      "post": {
+        "summary": "reply to a comment",
+        "operationId": "reply_to_comment",
+        "description": "reply to comment given a comment id",
+        "security": [
+          {
+            "oauth": [
+              "superuser"
+            ]
+          }
+        ],
+        "parameters": [
+
+          {"$ref": "#/parameters/CommentIdPathParameter"
+          },
+
+          {
+           "$ref": "#/parameters/ReplyToCommentParameter"
+          }
+
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/ReplyToACommentResponse"
+          }
+        }
+      },
+
+      "get": {
+        "summary": "Replies for a comment",
+        "operationId": "get_replies_for_comment",
+        "security": [
+          {
+            "oauth": [
+              "superuser"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/CommentIdPathParameter"
+          }
+
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/GetRepliesForCommentResponse"
           }
         }
       }
