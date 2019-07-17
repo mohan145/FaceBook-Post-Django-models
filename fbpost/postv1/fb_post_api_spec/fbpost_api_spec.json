@@ -44,6 +44,18 @@
         "post_id"
       ]
     },
+    "CommentId": {
+      "type": "object",
+      "properties": {
+        "comment_id": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "required": [
+        "comment_id"
+      ]
+    },
     "PostIdsList": {
       "type": "object",
       "properties": {
@@ -56,7 +68,6 @@
         }
       }
     },
-
     "Metric": {
       "type": "object",
       "properties": {
@@ -68,17 +79,14 @@
           "type": "string",
           "enum": [
             "HAHA",
-              "WOW",
-              "LIKE",
-              "SAD",
-              "ANGRY",
-              "LOL",
-              "LOVE"
-
+            "WOW",
+            "LIKE",
+            "SAD",
+            "ANGRY",
+            "LOL",
+            "LOVE"
           ]
         }
-
-
       }
     },
     "User": {
@@ -199,32 +207,38 @@
       ]
     },
     "Reply": {
-      "type": "object",
-      "properties": {
-        "comment_id": {
-          "type": "integer",
-          "format": "int64"
+      "allOf": [
+        {
+          "$ref": "#/definitions/CommentId"
         },
-        "content": {
-          "type": "string"
-        },
-        "commented_by": {
-          "$ref": "#/definitions/User"
-        },
-        "commented_at": {
-          "type": "string",
-          "format": "datetime"
-        },
-        "reactions": {
-          "$ref": "#/definitions/ReactionData"
+        {
+          "type": "object",
+          "properties": {
+            "comment_id": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "content": {
+              "type": "string"
+            },
+            "commented_by": {
+              "$ref": "#/definitions/User"
+            },
+            "commented_at": {
+              "type": "string",
+              "format": "datetime"
+            },
+            "reactions": {
+              "$ref": "#/definitions/ReactionData"
+            }
+          },
+          "required": [
+            "commented_at",
+            "commented_by",
+            "reactions",
+            "content"
+          ]
         }
-      },
-      "required": [
-        "comment_id",
-        "commented_at",
-        "commented_by",
-        "reactions",
-        "content"
       ]
     },
     "Comment": {
@@ -256,7 +270,7 @@
   },
   "parameters": {
     "CreatePostParameter": {
-      "name": "CreateNewPostParameter",
+      "name": "CreatePostParameter",
       "in": "body",
       "schema": {
         "type": "object",
@@ -270,6 +284,21 @@
         ]
       }
     },
+    "CreateCommentParameter": {
+      "name": "CreateCommentParameter",
+      "in": "body",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "comment_content": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "comment_content"
+        ]
+      }
+    },
     "PostIdParameter": {
       "name": "post_id",
       "in": "path",
@@ -278,6 +307,16 @@
       "format": "int64",
       "required": true
     },
+
+    "CommentIdParameter": {
+      "name": "comment_id",
+      "in": "path",
+      "description": "Given Comment Id",
+      "type": "integer",
+      "format": "int64",
+      "required": true
+    },
+
     "ReactionTypeParameter": {
       "name": "reaction_type",
       "in": "body",
@@ -341,7 +380,6 @@
         "$ref": "#/definitions/PostIdsList"
       }
     },
-
     "GetReactionMetricsResponse": {
       "description": "List of reaction metrics",
       "schema": {
@@ -355,6 +393,12 @@
       "description": "List of post ids with more positive reactions",
       "schema": {
         "$ref": "#/definitions/PostIdsList"
+      }
+    },
+    "AddCommentResponse": {
+      "description": "Add a comment to a given post",
+      "schema": {
+        "$ref": "#/definitions/CommentId"
       }
     }
   },
@@ -518,7 +562,6 @@
         }
       }
     },
-
     "/post/{post_id}/reaction/metrics/v1/": {
       "get": {
         "summary": "get reaction metrics for a post",
@@ -541,20 +584,80 @@
             "$ref": "#/responses/GetReactionMetricsResponse"
           }
         }
-      },
+      }
     },
-
     "/post/morepositivereactions/v1/": {
       "get": {
         "summary": "posts with more positive reactions",
         "operationId": "get_posts_with_more_positive_reactions",
         "description": "Return a list of post ids with more positive reactions",
+        "security": [
+          {
+            "oauth": [
+              "superuser"
+            ]
+          }
+        ],
         "parameters": [
-
         ],
         "responses": {
           "200": {
             "$ref": "#/responses/GetPostsWithMorePositiveReactionsResponse"
+          }
+        }
+      }
+    },
+    "/post/{post_id}/comment/v1/": {
+      "get": {
+        "summary": "add comment to  a post",
+        "operationId": "add_comment",
+        "description": "comment to a post given a post id and  comment content",
+        "security": [
+          {
+            "oauth": [
+              "superuser"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/PostIdParameter"
+          },
+          {
+            "$ref": "#/parameters/CreateCommentParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/AddCommentResponse"
+          }
+        }
+      }
+    },
+    "/comment/{comment_id}/reaction/v1/": {
+      "get": {
+        "summary": "react to a comment",
+        "operationId": "react_to_comment",
+        "description": "react to a comment given a comment id",
+        "security": [
+          {
+            "oauth": [
+              "superuser"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/CommentIdParameter"
+          },
+          {
+            "$ref": "#/parameters/ReactionTypeParameter"
+          }
+
+        ],
+        "responses": {
+          "200": {
+            "description": "Reacted to the comment successfully"
           }
         }
       }
