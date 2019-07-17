@@ -56,6 +56,31 @@
         }
       }
     },
+
+    "Metric": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "reaction": {
+          "type": "string",
+          "enum": [
+            "HAHA",
+              "WOW",
+              "LIKE",
+              "SAD",
+              "ANGRY",
+              "LOL",
+              "LOVE"
+
+          ]
+        }
+
+
+      }
+    },
     "User": {
       "type": "object",
       "properties": {
@@ -230,7 +255,7 @@
     }
   },
   "parameters": {
-    "CreateNewPostParameter": {
+    "CreatePostParameter": {
       "name": "CreateNewPostParameter",
       "in": "body",
       "schema": {
@@ -311,7 +336,23 @@
       }
     },
     "GetPostsReactedByUserResponse": {
-      "description": "Get List of Post Ids",
+      "description": "List of Post Ids of a User",
+      "schema": {
+        "$ref": "#/definitions/PostIdsList"
+      }
+    },
+
+    "GetReactionMetricsResponse": {
+      "description": "List of reaction metrics",
+      "schema": {
+        "type": "array",
+        "items": {
+          "$ref": "#/definitions/Metric"
+        }
+      }
+    },
+    "GetPostsWithMorePositiveReactionsResponse": {
+      "description": "List of post ids with more positive reactions",
       "schema": {
         "$ref": "#/definitions/PostIdsList"
       }
@@ -332,7 +373,7 @@
         ],
         "parameters": [
           {
-            "$ref": "#/parameters/CreateNewPostParameter"
+            "$ref": "#/parameters/CreatePostParameter"
           }
         ],
         "responses": {
@@ -436,7 +477,7 @@
         }
       }
     },
-    "/user/reactedpost/": {
+    "/user/reactedpost/v1/": {
       "get": {
         "summary": "posts reacted by user",
         "operationId": "get_posts_reacted_by_user",
@@ -473,6 +514,47 @@
         "responses": {
           "200": {
             "$ref": "#/responses/GetUserPostsResponse"
+          }
+        }
+      }
+    },
+
+    "/post/{post_id}/reaction/metrics/v1/": {
+      "get": {
+        "summary": "get reaction metrics for a post",
+        "operationId": "get_reaction_metrics",
+        "description": "Get reaction metrics for a post given a post id",
+        "security": [
+          {
+            "oauth": [
+              "superuser"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/PostIdParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/GetReactionMetricsResponse"
+          }
+        }
+      },
+    },
+
+    "/post/morepositivereactions/v1/": {
+      "get": {
+        "summary": "posts with more positive reactions",
+        "operationId": "get_posts_with_more_positive_reactions",
+        "description": "Return a list of post ids with more positive reactions",
+        "parameters": [
+
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/GetPostsWithMorePositiveReactionsResponse"
           }
         }
       }
