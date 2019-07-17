@@ -416,7 +416,7 @@
         "$ref": "#/definitions/CommentId"
       }
     },
-    "ReplyToACommentResponse": {
+    "ReplyToCommentResponse": {
       "description": "reply to a comment given a comment id",
       "schema": {
         "$ref": "#/definitions/CommentId"
@@ -717,7 +717,7 @@
         ],
         "responses": {
           "200": {
-            "$ref": "#/responses/ReplyToACommentResponse"
+            "$ref": "#/responses/ReplyToCommentResponse"
           }
         }
       },
