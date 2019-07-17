@@ -32,6 +32,21 @@
     }
   },
   "definitions": {
+
+    "PostId": {
+      "type": "object",
+      "properties": {
+        "post_id": {
+          "type": "integer",
+          "format": "int64"
+        },
+
+      },
+      "required": [
+        "post_id"
+      ]
+    },
+
     "User": {
       "type": "object",
       "properties": {
@@ -112,12 +127,15 @@
       ]
     },
     "Post": {
-      "type": "object",
-      "properties": {
-        "post_id": {
-          "type": "integer",
-          "format": "int64"
+
+      "allOf": [
+        {
+          "$ref": "#/definitions/PostId"
         },
+        {
+          "type": "object",
+      "properties": {
+
         "content": {
           "type": "string"
         },
@@ -139,13 +157,16 @@
         }
       },
       "required": [
-        "post_id",
         "posted_by",
         "posted_at",
         "content",
         "comments",
         "reactions"
       ]
+        }
+      ]
+
+
     },
     "Reply": {
       "type": "object",
@@ -227,13 +248,30 @@
       "format": "int64",
       "required": true
     },
-    "UserIdParameter": {
-      "name": "user_id",
-      "in": "path",
-      "description": "Given User ID",
-      "type": "integer",
-      "format": "int64",
-      "required": true
+    "ReactionTypeParameter": {
+      "name": "reaction_type",
+      "in": "body",
+      "description": "reaction type of a reaction",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "reaction_type": {
+            "type": "string",
+            "enum": [
+              "HAHA",
+              "WOW",
+              "LIKE",
+              "SAD",
+              "ANGRY",
+              "LOL",
+              "LOVE"
+            ]
+          }
+        },
+        "required": [
+          "reaction_type"
+        ]
+      }
     }
   },
   "responses": {
@@ -264,6 +302,26 @@
         "type": "array",
         "items": {
           "$ref": "#/definitions/Post"
+        }
+      }
+    },
+
+    "GetPostReactionsListResponse": {
+      "description": "List of reactions for a given post",
+      "schema": {
+        "type": "array",
+        "items": {
+          "$ref": "#/definitions/Reaction"
+        }
+      }
+    },
+
+    "GetPostIdListResponse": {
+      "description": "Get List of Post Ids",
+      "schema": {
+        "type": "array",
+        "items": {
+          "$ref": "#/definitions/PostId"
         }
       }
     }
@@ -320,6 +378,13 @@
         "summary": "delete a post",
         "operationId": "delete_post",
         "description": "delete a post given a post id",
+        "security": [
+          {
+            "oauth": [
+              "superuser"
+            ]
+          }
+        ],
         "parameters": [
           {
             "$ref": "#/parameters/PostIdParameter"
@@ -330,9 +395,68 @@
             "description": "Deleted post with given post id"
           }
         }
+      },
+      "put": {
+        "summary": "react to a post",
+        "operationId": "react_to_post",
+        "description": "react to a post with a given post id",
+        "security": [
+          {
+            "oauth": [
+              "superuser"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/PostIdParameter"
+          },
+          {
+            "$ref": "#/parameters/ReactionTypeParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Reaction updated successfully"
+          }
+        }
       }
     },
-    "/user/{user_id}/post/v1/": {
+
+    "/post/{post_id}/reaction/v1/": {
+      "get": {
+        "summary": "get reactions to a post",
+        "operationId": "get_reactions_to_a_post",
+        "parameters": [
+          {
+            "$ref": "#/parameters/PostIdParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/GetPostReactionsListResponse"
+          }
+        }
+      }
+    },
+
+
+    "/user/reactedpost/": {
+      "get": {
+        "summary": "posts reacted by user",
+        "operationId": "get_posts_reacted_by_user",
+        "parameters": [
+
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/GetPostIdListResponse"
+          }
+        }
+      }
+    },
+
+    "/user/post/v1/": {
       "get": {
         "operationId": "get_user_posts",
         "summary": "get posts of a user",
@@ -345,9 +469,6 @@
           }
         ],
         "parameters": [
-          {
-            "$ref": "#/parameters/UserIdParameter"
-          }
         ],
         "responses": {
           "200": {
